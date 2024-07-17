@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Pasien;
 use yii\web\Controller;
 use app\models\Pendaftaran;
 
@@ -17,8 +18,16 @@ class LaporanController extends Controller
             ->asArray()
             ->all();
 
+        $pasienData = Pasien::find()
+            ->select(['id', 'COUNT(*) AS jumlah'])
+            ->groupBy('id')
+            ->orderBy('id')
+            ->asArray()
+            ->all();
+
         return $this->render('index', [
             'pendaftaranData' => $pendaftaranData,
+            'pasienData' => $pasienData,
         ]);
     }
 }

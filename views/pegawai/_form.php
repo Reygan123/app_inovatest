@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Wilayah;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -22,7 +23,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'wilayah_id')->textInput() ?>
+    <?= $form->field($model, 'wilayah_id')->dropDownList(
+        Wilayah::find()->select(['id', 'name'])->indexBy('id')->column(), 
+        ['prompt' => 'Pilih Wilayah']
+    ) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => $model->obat->name,
                 'label' => 'Nama Obat',
             ],
-            'quantity',
+            // 'quantity',
             'total_cost',
         ],
     ]) ?>

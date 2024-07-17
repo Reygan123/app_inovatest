@@ -3,54 +3,58 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
-/**
- * This is the model class for table "user".
- *
- * @property int $id
- * @property string $username
- * @property string $name
- * @property string $email
- * @property string $password
- * @property string|null $phone_number
- * @property string $role
- */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'user';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public static function findIdentity($id)
     {
-        return [
-            [['username', 'name', 'email', 'password', 'role'], 'required'],
-            [['username', 'name', 'email', 'password', 'phone_number', 'role'], 'string', 'max' => 255],
-            [['email'], 'unique'],
-            [['username'], 'unique'],
-        ];
+        return static::findOne($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'name' => 'Name',
-            'email' => 'Email',
-            'password' => 'Password',
-            'phone_number' => 'Phone Number',
-            'role' => 'Role',
-        ];
+        return null;
+    }
+
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username]);
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->auth_key === $authKey;
+    }
+
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
     }
 }

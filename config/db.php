@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=localhost;dbname=inova',
-    'username' => 'postgres',
-    'password' => 'giriharja',
+    'dsn' => 'pgsql:host=localhost;dbname=database',
+    'username' => 'username',
+    'password' => 'password',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

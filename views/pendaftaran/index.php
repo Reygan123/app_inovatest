@@ -18,10 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Pendaftaran', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if (Yii::$app->user->can('admin')) : ?>
+            <?= Html::a('Create Pendaftaran', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php endif; ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,15 +35,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'pasien_id',
-                'value' => 'pasien.name', // asumsikan tabel pasien memiliki kolom name
+                'value' => 'pasien.name',
+                'label' => 'Nama Pasien'
             ],
-            'pasien_id',
+            [
+                'attribute' => 'pasien_id',
+                'value' => 'pasien.name',
+                'label' => 'ID Pasien'
+            ],
             'tanggal_daftar',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Pendaftaran $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

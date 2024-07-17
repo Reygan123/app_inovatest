@@ -18,10 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Pegawai', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if (Yii::$app->user->can('admin')) : ?>
+            <?= Html::a('Create Pegawai', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php endif; ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,17 +33,32 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'name',
-            'address:ntext',
-            'phone_number',
+            [
+                'attribute' => 'name',
+                'value' => 'name',
+                'label' => 'Nama'
+            ],
+            [
+                'attribute' => 'address',
+                'value' => 'address',
+                'label' => 'Alamat'
+            ],
+            [
+                'attribute' => 'phone_number',
+                'value' => 'phone_number',
+                'label' => 'Nomor HP'
+            ],
+            [
+                'attribute' => 'wilayah_id',
+                'value' => 'wilayah.name',
+                'label' => 'Wilayah'
+            ],
             'email:email',
-            //'role',
-            //'wilayah_id',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Pegawai $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

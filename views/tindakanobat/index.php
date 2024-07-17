@@ -18,10 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Tindakanobat', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if (Yii::$app->user->can('admin')) : ?>
+            <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php endif; ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,7 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'pendaftaran_id',
+                'value' => 'pendaftaran_id',
+            ],
+            [
+                'attribute' => 'pendaftaran_id',
                 'value' => 'pendaftaran.pasien.name',
+                'label' => 'Nama Pasien'
             ],
             [
                 'attribute' => 'tindakan_id',
@@ -42,13 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'obat_id',
                 'value' => 'obat.name',
             ],
-            'quantity',
-            //'total_cost',
+            // 'quantity',
+            'total_cost',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Tindakanobat $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

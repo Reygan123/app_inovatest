@@ -15,13 +15,13 @@ class m240716_110100_create_user_table extends Migration
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
-            'name' => $this->string()->notNull(),
-            'email' => $this->string()->notNull()->unique(),
-            'password' => $this->string()->notNull(),
-            'phone_number' => $this->string(),
-            'role' => $this->string()->notNull(),
-            // 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-            // 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'password_hash' => $this->string()->notNull(),
+            'auth_key' => $this->string(32)->notNull(),
+            'access_token' => $this->string()->defaultValue(null),
+            'role' => $this->string(64)->notNull(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            // 'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            // 'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
         ]);
     }
 
